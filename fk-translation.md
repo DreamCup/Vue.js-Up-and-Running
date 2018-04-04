@@ -14,7 +14,7 @@
 
      <script src="https://unpkg.com/vuex"></script>
 
-另外，如果你使用的是npm，则可以使用 `npm install --save vuex` 来安装vuex。如果你使用的是webpack之类的打包工具，那么就像使用`vue——router`一样，你必须调用`Vue.use()`：
+另外，如果你使用的是npm，则可以使用 `npm install --save vuex` 来安装vuex。如果你使用的是webpack之类的打包工具，那么就像使用`vue-router`一样，你必须调用`Vue.use()`：
 
     import Vue from 'vue';
     import Vuex from 'vuex';
@@ -50,7 +50,7 @@
 
 正如本章导言中所提到的，当一个复杂应用中的多个组件需要共享状态时，vuex是必需的。
 
-让我们用一个没有使用vuex编写的简单组件来显示用户在页面上的消息数量：
+让我们用一个没有使用vuex编写的简单组件在页面上显示用户的消息数量：
 
     const NotificationCount = {
       template: `<p>Messages: {{ messageCount }}</p>`,
@@ -71,9 +71,9 @@
 
 <img src='./images/1.png' style='float:left;margin-right:20px'/> 
 
->实际应用中，代码会更加复杂一些：在这个例子中，websocket连接并上没有认证环节，并且假定通过websocket的响应是有效的JSON，它的message属性定义为一个数组，但实际情况中可能并不是这样。对于这个例子，这些简单的代码将完成这项工作。
+>实际应用中，情况会更加复杂一些：在这个例子中，websocket连接并上没有认证环节，通过websocket的响应也假定是有效的JSON，并且其message属性被设定为一个数组，但实际情况中可能并不是这样。对于这个例子，这些简单的代码将完成这项工作。
 
-当我们想在同一页面上使用多个Notification Count组件时，我们就会发现问题。由于每个组件都建立了一个WebSocket，这样就建立了一些不必要的重复连接，并且由于网络延迟，组件的更新时间也可能会稍有不同。为了解决这个问题，我们可以将WebSocket的逻辑转移到vuex中。
+当我们想在同一页面上使用多个Notification Count组件时，我们就会发现问题。由于每个组件都建立了一个WebSocket，这样就会产生一些不必要的重复连接，并且由于网络延迟，组件的更新时间也可能会稍有不同。为了解决这个问题，我们可以将WebSocket的逻辑转移到vuex中。
 
 马上来看一个例子，我们的组件将变成下面这样：
 
@@ -113,9 +113,9 @@
       }
     });
 
-现在，每个已挂载的计数通知组件都将触发getMessages，该操作会检查websocket是否存在，并且仅在没有已打开的连接时才打开连接。然后它监听socket套接字，对状态（state）进行更改，然后计数通知组件就会更新状态，因为store是响应式的 —— 就像Vue中的大多数其他事情一样。当socket套接字发送新的东西时，全局store将被更新，并且页面上的每个组件都将同时更新。
+现在，每个已挂载的计数通知组件都将触发getMessages，该操作会检查websocket是否存在，并且仅在没有已打开的连接时才打开连接。然后它监听socket套接字，对状态（state）进行更改，然后计数通知组件就会更新状态，因为store是响应式的 —— 就像Vue中的大多数其他事情一样。当socket套接字发送新的东西时，全局store将被更新，并且页面上的每个组件也同时更新。
 
-在本章节的其余部分中，我将介绍给你在该示例中看到的单个概念 —— 状态（state），变异（mutations），行为（actions） —— 并介绍一种方法，使我们可以在大型应用程序中构造我们的vuex模块, 以避免出现一个大而凌乱的文件。
+在本章节的其余部分中，我将会介绍在这个例子中看到的各个概念 —— 状态（state），变异（mutations），行为（actions） —— 并介绍一种方法，使我们可以在大型应用程序中构造我们的vuex模块, 以避免出现一个大而凌乱的文件。
 
 ### State和State Helpers
 
